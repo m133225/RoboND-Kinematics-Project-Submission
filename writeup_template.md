@@ -1,35 +1,8 @@
 ## Project: Kinematics Pick & Place
-### Writeup Template: You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
-
----
-
-
-**Steps to complete the project:**  
-
-
-1. Set up your ROS Workspace.
-2. Download or clone the [project repository](https://github.com/udacity/RoboND-Kinematics-Project) into the ***src*** directory of your ROS Workspace.  
-3. Experiment with the forward_kinematics environment and get familiar with the robot.
-4. Launch in [demo mode](https://classroom.udacity.com/nanodegrees/nd209/parts/7b2fd2d7-e181-401e-977a-6158c77bf816/modules/8855de3f-2897-46c3-a805-628b5ecf045b/lessons/91d017b1-4493-4522-ad52-04a74a01094c/concepts/ae64bb91-e8c4-44c9-adbe-798e8f688193).
-5. Perform Kinematic Analysis for the robot following the [project rubric](https://review.udacity.com/#!/rubrics/972/view).
-6. Fill in the `IK_server.py` with your Inverse Kinematics code.
-
-
-[//]: # (Image References)
 
 [image1]: ./images/DH_diagram.jpg
 [image2]: ./images/IK_position_diagram.jpg
 [image3]: ./images/performance.png
-
-## [Rubric](https://review.udacity.com/#!/rubrics/972/view) Points
-### Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
-
----
-### Writeup / README
-
-#### 1. Provide a Writeup / README that includes all the rubric points and how you addressed each one.  You can submit your writeup as markdown or pdf.  
-
-You're reading it!
 
 ### Kinematic Analysis
 #### 1. Run the forward_kinematics demo and evaluate the kr210.urdf.xacro file to perform kinematic analysis of Kuka KR210 robot and derive its DH parameters.
@@ -54,19 +27,21 @@ T6_EE : [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0.303000000000000], [0, 0, 0, 1]]
 Assuming that the End-Effector has a position of `[px, py ,pz]` and has an orientation of euler angles `roll, pitch, yaw`.
 
 Generalised Homogenous Transform T0_EE:  
+```
 [[sin(pitch)*cos(roll)*cos(yaw) + sin(roll)*sin(yaw), -sin(pitch)*sin(roll)*cos(yaw) + sin(yaw)*cos(roll), cos(pitch)*cos(yaw), px]  
 [sin(pitch)*sin(yaw)*cos(roll) - sin(roll)*cos(yaw), -sin(pitch)*sin(roll)*sin(yaw) - cos(roll)*cos(yaw), sin(yaw)*cos(pitch), py]  
 [cos(pitch)*cos(roll), -sin(roll)*cos(pitch), -sin(pitch), pz]  
 [0, 0, 0, 1]]
+```
 
-The rotation matrix R0_EE = (T0_EE[0:3, 0:3]) is obtained using:  
+The rotation matrix R0_EE = T0_EE[0:3, 0:3] is obtained using:  
 `rot_z(yaw) * rot_y(pitch) * rot_x(roll) * rot_y(pi/2) * rot_z(pi)`  
 where `rot_y(pi/2) * rot_z(pi)` is the angle correction required to align the orientation of the world frame to the resulting gripper frame.
 
 #### 3. Decouple Inverse Kinematics problem into Inverse Position Kinematics and inverse Orientation Kinematics; doing so derive the equations to calculate all individual joint angles.
 
 The wrist center is used for the calculations for the first 3 joints.
-Assuming that the wrist center has a position of `[wc_x, wc_y, wc_z]'.
+Assuming that the wrist center has a position of `[wc_x, wc_y, wc_z]`.
 
 **Position**
 
