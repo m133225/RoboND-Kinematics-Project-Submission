@@ -7,8 +7,6 @@
 ### Kinematic Analysis
 #### 1. Run the forward_kinematics demo and evaluate the kr210.urdf.xacro file to perform kinematic analysis of Kuka KR210 robot and derive its DH parameters.
 
-Here is an example of how to include an image in your writeup.
-
 ![DH Diagram][image1]
 
 #### 2. Using the DH parameter table you derived earlier, create individual transformation matrices about each joint. In addition, also generate a generalized homogeneous transform between base_link and gripper_link using only end-effector(gripper) pose.
@@ -51,8 +49,9 @@ Deriving Theta1 is pretty straightforward since only joint 1 is able to control 
 Deriving Theta2 and Theta3 takes a little more work.  
 ![Deriving Theta2 and Theta3][image2]
 
-The assumptions made here are that `L != 0` i.e. the wrist center is not at the origin, which is reasonable since otherwise there would be collisions, and `0 <= alpha, beta <= pi/2`.
-The above diagram also applies when Theta3 is **positive** beta. It is also assumed here that Theta2 will never need to be positive in the context of this problem since the shelf/target is significantly far from the origin.
+The assumption made here is that `L != 0` i.e. the wrist center is not at the origin, which is reasonable since otherwise there would be collisions.
+While the diagram only clearly illustrates the situation when `0 <= alpha, beta <= pi/2`, it also applies when Theta3 is **positive** beta and/or Theta2 is **positive** alpha (`-pi/2 <= alpha, beta <= pi/2`). 
+It is also very likely that the magnitude of Theta2 will never need to be more than pi/2 in the context of this problem due to the height of joint 2. Similarly, for Theta3 in the context of this project.
 
 **Orientation**
 
@@ -77,7 +76,7 @@ Theta4 = q4 = atan2(r<sub>33</sub>, -r<sub>13</sub>)
 Theta5 = q5 = atan2(sqrt(r<sub>13</sub><sup>2</sup> + r<sub>33</sub><sup>2</sup>), r<sub>2,3</sub>)  
 Theta6 = q6 = atan2(r<sub>22</sub>, -r<sub>21</sub>)
 
-Of course, since the z-axis chosen is opposite of that used by the software, Theta2, Theta3 and Theta5 have to be negated before being sent back as response.
+Of course, since the z-axis chosen is opposite of that used by the software, Thus, Theta2, Theta3 and Theta5 have to be negated before being sent back as response.
 
 ### Project Implementation
 
@@ -89,4 +88,4 @@ Here is a picture that I sent to some of my friends. :p
 
 ![YAY][image3]
 
-Also, since the error computation of the End-Effector position is rather straightforward (unless it meant collecting data and do some statistical analysis...), I implemented it and my error seems to be in the magnitude of 10^-16m!
+Also, since the error computation of the End-Effector position is rather straightforward (unless it meant collecting data and doing some statistical analysis...), I implemented it and my error values seem to be in the magnitude of 10<sup>-16</sup>m!
