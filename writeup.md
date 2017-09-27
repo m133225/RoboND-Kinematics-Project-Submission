@@ -11,6 +11,8 @@
 
 #### 2. Using the DH parameter table you derived earlier, create individual transformation matrices about each joint. In addition, also generate a generalized homogeneous transform between base_link and gripper_link using only end-effector(gripper) pose.
 
+All the matrices in this section were created using `FK_matrices.py`.
+
 Individual Transformation Matrices about each joint:
 
 T0_1 : [[cos(theta1), -sin(theta1), 0, 0], 
@@ -22,8 +24,10 @@ T4_5 : [[cos(theta5), -sin(theta5), 0, 0], [0, 0, 1, 0], [-sin(theta5), -cos(the
 T5_6 : [[cos(theta6), -sin(theta6), 0, 0], [0, 0, -1, 0], [sin(theta6), cos(theta6), 0, 0], [0, 0, 0, 1]]  
 T6_EE : [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0.303000000000000], [0, 0, 0, 1]]  
 
-Assuming that the End-Effector has a position of `[px, py ,pz]` and has an orientation of euler angles `roll, pitch, yaw`.
 
+The individual transformation matrices are simply evaluated by feeding the DH parameters into the general transformation matrix shown in the lesson `Denavit-Hartenberg Parameters`.
+
+Assuming that the End-Effector has a position of `[px, py ,pz]` and has an orientation of euler angles `roll, pitch, yaw`.
 Generalised Homogenous Transform T0_EE:  
 ```
 [[sin(pitch)*cos(roll)*cos(yaw) + sin(roll)*sin(yaw), -sin(pitch)*sin(roll)*cos(yaw) + sin(yaw)*cos(roll), cos(pitch)*cos(yaw), px]  
@@ -32,7 +36,7 @@ Generalised Homogenous Transform T0_EE:
 [0, 0, 0, 1]]
 ```
 
-The rotation matrix R0_EE = T0_EE[0:3, 0:3] is obtained using:  
+The rotation matrix R0_EE = T0_EE[0:3, 0:3] component is obtained using:  
 `rot_z(yaw) * rot_y(pitch) * rot_x(roll) * rot_y(pi/2) * rot_z(pi)`  
 where `rot_y(pi/2) * rot_z(pi)` is the angle correction required to align the orientation of the world frame to the resulting gripper frame.
 
@@ -46,7 +50,7 @@ Assuming that the wrist center has a position of `[wc_x, wc_y, wc_z]`.
 Deriving Theta1 is pretty straightforward since only joint 1 is able to control the z-axis angle.
 `Theta1 = atan2(wc_y, wc_x)`
 
-Deriving Theta2 and Theta3 takes a little more work.  
+Deriving Theta2 and Theta3 requires a little more work.  
 ![Deriving Theta2 and Theta3][image2]
 
 The assumption made here is that `L != 0` i.e. the wrist center is not at the origin, which is reasonable since otherwise there would be collisions.
